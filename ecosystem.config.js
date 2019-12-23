@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'constellation',
+    name: 'scrdcool-api',
     script: 'app.js',
     instances: 1,
     watch: true,
