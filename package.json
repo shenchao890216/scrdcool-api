@@ -1,0 +1,25 @@
+{
+  "name": "scrdcool-api",
+  "version": "1.0.0",
+  "description": "make fun",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^7.1.4",
+    "formidable": "^1.2.1",
+    "ioredis": "^4.14.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.12.2",
+    "koa-static": "^5.0.0",
+    "moment": "^2.24.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.12.2"
+  },
+  "repository": "https://github.com/shenchao890216/scrdcool-api.git"
+}
