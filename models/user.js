@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   let User = sequelize.define('User', {
-    username: {
+    phone: {
       type: DataTypes.STRING,
       unique: true
     },

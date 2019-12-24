@@ -6,7 +6,7 @@ user.post('/register', async function (ctx) {
 })
 
 /* 登录. */
-user.post('/register', async function (ctx) {
+user.post('/login', async function (ctx) {
 })
 
 /* 用户信息. */
