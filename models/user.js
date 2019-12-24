@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   // User.associate = function(models) {
-  //   models.User.hasOne(models.Banner)
+  //   models.User.hasMany(models.Posts)
   // }
 
   return User
