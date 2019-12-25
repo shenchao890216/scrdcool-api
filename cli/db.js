@@ -1,3 +1,5 @@
 const models = require('../models')
 
-models.sequelize.sync()
+models.sequelize.sync({
+  force: true
+})
