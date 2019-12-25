@@ -1,14 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
   let Post = sequelize.define('Post', {
-    title: DataTypes.STRING,
-    content: DataTypes.TEXT
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: '文章标题'
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      comment: '文章内容'
+    },
+    top: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      comment: '文章置顶：0【不置顶】1【置顶】'
+    }
   }, {
     tableName: 'post'
   })
 
   Post.associate = function(models) {
     models.Post.belongsTo(models.User, {
-      foreignKey: 'author'
+      foreignKey: 'author',
+      constraints: false
     })
   }
 

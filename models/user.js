@@ -1,17 +1,33 @@
 module.exports = (sequelize, DataTypes) => {
   let User = sequelize.define('User', {
-    phone: {
+    username: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      comment: '用户名'
     },
-    password: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      comment: '用户邮箱'
+    },
+    salt: {
+      type: DataTypes.STRING,
+      comment: '用户密码盐'
+    },
+    password: {
+      type: DataTypes.STRING,
+      comment: '用户密码'
+    }
   }, {
     tableName: 'user'
   })
 
-  // User.associate = function(models) {
-  //   models.User.hasMany(models.Posts)
-  // }
+  User.associate = function(models) {
+    models.User.hasMany(models.Post, {
+      foreignKey: 'author',
+      constraints: false
+    })
+  }
 
   return User
 }
