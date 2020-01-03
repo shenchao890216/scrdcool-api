@@ -5,6 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       comment: '文章标题'
     },
+    origin_content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      comment: '文章原始内容'
+    },
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
