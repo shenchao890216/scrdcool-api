@@ -1,6 +1,10 @@
 const koaRouter = require('koa-router')
 const post = new koaRouter()
 const { Post } = require('../models')
+const { User } = require('../models')
+const { Tag } = require('../models')
+const { Sequelize } = require('../models')
+const Op = Sequelize.Op
 
 /* 新建文章. */
 post.post('/new', async function (ctx) {
@@ -9,16 +13,35 @@ post.post('/new', async function (ctx) {
   // 2. 取得用户.
 
   // 3. 取得参数.
-  const { postTitle ,postOriginContent ,postContent } = ctx.request.body
+  const { postTitle ,postOriginContent ,postContent, postTags } = ctx.request.body
+  const userId = ctx.session.userId
+
+  const user = await User.findOne({
+    where: {
+      id: userId
+    }
+  })
+
+  const tags = await Tag.findAll({
+    where: {
+      id: {
+        [Op.in]: postTags
+      }
+    }
+  })
+
+  console.log(tags)
 
   // 4. 保存文章.
-  await Post.create({
+  const post = await Post.create({
     title: postTitle,
     content: postContent,
     origin_content: postOriginContent,
-    top: 0,
-    auth: 1
+    top: 0
   })
+
+  post.setUser(user)
+  post.setTags(tags)
 
   // 5. 返回数据.
   ctx.body = {
@@ -29,7 +52,18 @@ post.post('/new', async function (ctx) {
 
 /* 文章列表. */
 post.get('/list', async (ctx) => {
-  const posts = await Post.findAll()
+  const posts = await Post.findAll({
+    include: [{
+      model: User,
+      attributes: ['username']
+    }, {
+      model: Tag,
+      attributes: ['id', 'name'],
+      through: {
+        attributes: []
+      }
+    }]
+  })
 
   ctx.body = {
     code: 0,
@@ -38,19 +72,54 @@ post.get('/list', async (ctx) => {
   }
 })
 
+/* 更新文章. */
+post.post('/:id', async (ctx) => {
+  // 1. 校验参数.
+
+  // 2. 取得用户.
+
+  // 3. 取得参数.
+  const { id } = ctx.params
+  const { postTitle ,postOriginContent ,postContent } = ctx.request.body
+
+  // 4. 保存文章.
+  await Post.update({
+    title: postTitle,
+    content: postContent,
+    origin_content: postOriginContent
+  }, {
+    where: { id }
+  })
+
+  // 5. 返回数据.
+  ctx.body = {
+    code: 0,
+    msg: 'success'
+  }
+})
+
 /* 文章内容. */
 post.get('/:id', async (ctx) => {
   const { id } = ctx.params
 
-  const post = await Post.findAll({
+  const post = await Post.findOne({
     where: { id },
-    raw: true
+    include: [{
+      model: User,
+      attributes: ['username']
+    }, {
+      model: Tag,
+      attributes: ['id', 'name'],
+      through: {
+        attributes: []
+      }
+    }]
   })
 
   ctx.body = {
     code: 0,
     msg: 'success',
-    data: post[0]
+    data: post
   }
 })
 

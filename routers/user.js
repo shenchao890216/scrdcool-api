@@ -33,6 +33,41 @@ user.post('/register', async function (ctx) {
 
 /* 登录. */
 user.post('/login', async function (ctx) {
+  let responseData = {
+    code: 0,
+    msg: 'Success'
+  }
+  // 1. 校验图形验证码.
+
+  // 2. 取得参数.
+  const { email, password } = ctx.request.body
+
+  // 3. 校验参数.
+
+  // 4. 查询用户.
+  const [ {id, salt, password: newPassword} ] = await User.findAll({
+    where: { email },
+    raw: true
+  })
+
+  // 5. 校验数据.
+  if (newPassword !== md5(salt + password)) {
+    responseData.code = 10086
+    responseData.msg = '密码错误'
+  }
+
+  // 6. 种植session和token.
+  if (responseData.code === 0) {
+    ctx.session.userId = id
+    ctx.cookies.set('token', 1, {
+      domain: '.scrdcool.com',
+      httpOnly: true,
+      overwrite: false
+    })
+  }
+
+  // 7. 返回结果.
+  ctx.body = responseData
 })
 
 /* 用户信息. */

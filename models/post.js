@@ -21,12 +21,23 @@ module.exports = (sequelize, DataTypes) => {
       comment: '文章置顶：0【不置顶】1【置顶】'
     }
   }, {
-    tableName: 'post'
+    tableName: 'post',
+    underscored: true
   })
 
   Post.associate = function(models) {
+    // 文章、用户.
     models.Post.belongsTo(models.User, {
-      foreignKey: 'author',
+      // foreignKey: 'author',
+      constraints: false
+    })
+    // 文章、标签.
+    models.Post.belongsToMany(models.Tag, {
+      constraints: false,
+      through: 'post_tag'
+    })
+    // 文章、分类.
+    models.Post.belongsTo(models.Category, {
       constraints: false
     })
   }

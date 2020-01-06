@@ -19,12 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       comment: '用户密码'
     }
   }, {
-    tableName: 'user'
+    tableName: 'user',
+    underscored: true
   })
 
   User.associate = function(models) {
     models.User.hasMany(models.Post, {
-      foreignKey: 'author',
+      // foreignKey: 'author',
       constraints: false
     })
   }

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     }
   }, {
-    tableName: 'banner'
+    tableName: 'banner',
+    underscored: true
   })
 }
