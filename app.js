@@ -7,12 +7,14 @@ const path = require('path')
 const svgCaptcha = require('svg-captcha')
 const APPCONF = require('./conf/appconf')
 const router = require('./routers')
+// const session = require('./lib')
 const app = new Koa()
 
 app.keys = ['scrd cool api']
 
 app.use(koaLogger())
 app.use(session(APPCONF.session, app))
+// app.use(session(APPCONF.session, app))
 app.use(koaBodyParser())
 app.use(koaStatic(path.join(__dirname, './static')))
 app.use(router.routes()).use(router.allowedMethods())

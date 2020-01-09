@@ -3,6 +3,7 @@ const post = new koaRouter()
 const { Post } = require('../models')
 const { User } = require('../models')
 const { Tag } = require('../models')
+const { Category } = require('../models')
 const { Sequelize } = require('../models')
 const Op = Sequelize.Op
 
@@ -13,12 +14,18 @@ post.post('/new', async function (ctx) {
   // 2. 取得用户.
 
   // 3. 取得参数.
-  const { postTitle ,postOriginContent ,postContent, postTags } = ctx.request.body
+  const { postTitle ,postOriginContent ,postContent, postTags, postCategory } = ctx.request.body
   const userId = ctx.session.userId
 
   const user = await User.findOne({
     where: {
       id: userId
+    }
+  })
+
+  const category = await Category.findOne({
+    where: {
+      id: postCategory
     }
   })
 
@@ -30,7 +37,7 @@ post.post('/new', async function (ctx) {
     }
   })
 
-  console.log(tags)
+  console.log(postCategory)
 
   // 4. 保存文章.
   const post = await Post.create({
@@ -42,6 +49,7 @@ post.post('/new', async function (ctx) {
 
   post.setUser(user)
   post.setTags(tags)
+  post.setCategory(category)
 
   // 5. 返回数据.
   ctx.body = {
@@ -113,6 +121,9 @@ post.get('/:id', async (ctx) => {
       through: {
         attributes: []
       }
+    }, {
+      model: Category,
+      attributes: ['id', 'name']
     }]
   })
 

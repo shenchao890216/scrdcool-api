@@ -1,9 +1,9 @@
 const koaRouter = require('koa-router')
-const tag = new koaRouter()
-const { Tag } = require('../models')
+const category = new koaRouter()
+const { Category } = require('../models')
 
-/* 新建文章. */
-tag.post('/new', async function (ctx) {
+/* 新建分类. */
+category.post('/new', async function (ctx) {
   // 1. 校验参数.
 
   // 2. 取得用户.
@@ -12,7 +12,7 @@ tag.post('/new', async function (ctx) {
   const { name } = ctx.request.body
 
   // 4. 保存文章.
-  const post = await Tag.create({
+  const category = await Category.create({
     name
   })
 
@@ -23,18 +23,16 @@ tag.post('/new', async function (ctx) {
   }
 })
 
-/* 文章列表. */
-tag.get('/list', async (ctx) => {
-  console.log(ctx.session.userId)
-
-  const tags = await Tag.findAll({
+/* 分类列表. */
+category.get('/list', async (ctx) => {
+  const categories = await Category.findAll({
     attributes: ['id', 'name']
   })
 
   ctx.body = {
     code: 0,
     msg: 'success',
-    data: tags
+    data: categories
   }
 })
 
@@ -64,4 +62,4 @@ tag.get('/list', async (ctx) => {
 //   }
 // })
 
-module.exports = tag
+module.exports = category

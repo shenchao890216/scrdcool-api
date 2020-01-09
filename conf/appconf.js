@@ -4,7 +4,7 @@ const APPCONF = {
   },
   db: {
     username: 'root',
-    password: 'root',
+    password: '16520521sc.LN',
     port: '3306',
     host: '127.0.0.1',
     database: 'scrdcool',
